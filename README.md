@@ -10,13 +10,13 @@ As the origin darknet project is written in CUDA, this project is to port<br>
 the darknet to OpenCL. 
 ## Dependency
 `OpenCL`<br>
-Make sure you have OpenCL installed.
-You can check it with clinfo.
+Make sure you have OpenCL installed.<br>
+You can check it with clinfo.<br>
 `clBLAS`<br>
 clBLAS is equivalent to cuBLAS, you can find the source code [here](https://github.com/clMathLibraries/clBLAS)<br>
 and compile it yourself.<br>
-or you can use binary library for Windows/Ubuntu x64 platform I have already provided<br>
-You can find clBLAS.lib/clBLAS.dll for Windows and libclBLAS.so for Linux <br>
+or you can use binary library<br>
+You can find clBLAS.lib and libclBLAS.so for Linux <br>
 as well as header file [here](https://github.com/ganyc717/Darknet-On-OpenCL/tree/master/darknet_cl/clBLAS).<br>
 ## Build
 `Linux`<br>
