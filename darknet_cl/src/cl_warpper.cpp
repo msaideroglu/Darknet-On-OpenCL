@@ -211,6 +211,10 @@ void CLWarpper::checkError(cl_int error) {
 		case CL_INVALID_BUFFER_SIZE:
 			message = "CL_INVALID_BUFFER_SIZE";
 			break;
+		// gds 1/2022
+		case CL_BUILD_PROGRAM_FAILURE:
+			message = "CL_BUILD_PROGRAM_FAILURE";
+			break;
 		}
 		std::cout << "opencl execution error, code " << error << " " << message << std::endl;
 		throw std::runtime_error(std::string("OpenCL error, code: ") + message);
@@ -270,7 +274,7 @@ std::shared_ptr<CLProgram> CLWarpper::buildProgramFromFile(std::string sourcefil
 	const char *source_char;
 	std::string source = getFileContents(sourcefileName);
 	if (source.empty())//use the default buildin kernel source
-		if(source_map[sourcefileName].empty())
+		if (source_map[sourcefileName].empty())
 			throw std::runtime_error("Failed to find the kernel source");
 		else
 			source = source_map[sourcefileName];
@@ -282,8 +286,19 @@ std::shared_ptr<CLProgram> CLWarpper::buildProgramFromFile(std::string sourcefil
 	checkError(error);
 
 	error = clBuildProgram(program, 1, &device, options.c_str(), NULL, NULL);
+	// gds 1/2022
+	// write out the build log 
+	if (error != CL_SUCCESS) {
+		char cBuildLog[10240];
+		clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG,
+			sizeof(cBuildLog), cBuildLog, NULL);
+		std::cout << "Source OpenCL program name: " << sourcefileName << " " << std::endl;
+		std::cout << "Build  error log:<< " << cBuildLog  << " >>"  << std::endl;
+	};
+	// end gds
 	checkError(error);
 
+/*
 	char* build_log;
 	size_t log_size;
 	error = clGetProgramBuildInfo(program, device, CL_PROGRAM_BUILD_LOG, 0, NULL, &log_size);
@@ -299,6 +314,7 @@ std::shared_ptr<CLProgram> CLWarpper::buildProgramFromFile(std::string sourcefil
 	}
 	delete[] build_log;
 	checkError(error);
+*/
 	std::shared_ptr<CLProgram> res(new CLProgram(program));
 	return res;
 }

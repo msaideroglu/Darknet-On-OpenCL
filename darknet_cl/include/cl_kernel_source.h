@@ -778,7 +778,7 @@ __kernel void softmax_x_ent_kernel(int n, __global float *pred, __global float *
     if(i < n){\n\
         float t = truth[i];\n\
         float p = pred[i];\n\
-        error[i] = (t) ? -log(p) : 0;\n\
+        error[i] = (t > 0) ? -log(p) : 0;\n\
         delta[i] = t-p;\n\
     }\n\
 }\n\
@@ -798,7 +798,7 @@ __kernel void wgan_kernel(int n, __global float *pred, __global float *truth, __
     int i = get_global_id(2) * get_global_size(0) * get_global_size(1) +\n\
                                 get_global_id(1) * get_global_size(0) + get_global_id(0);\n\
     if(i < n){\n\
-        error[i] = truth[i] ? -pred[i] : pred[i];\n\
+        error[i] = ( truth[i] > 0) ? -pred[i] : pred[i];\n\
         delta[i] = (truth[i] > 0) ? 1 : -1;\n\
     }\n\
 }\n\
