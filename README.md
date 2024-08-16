@@ -24,9 +24,10 @@ mkdir build && cd build<br>
 cmake ../<br>
 make<br>
 ## Usage
-Once you compiled this project, it has the same usage as darknet,<br>
-you can find it [here](https://pjreddie.com/darknet/).<br>
-If you compile the project depend on the clBLAS library I provided, you'd better<br>
-copy dependent library clBLAS.dll or libclBLAS.so to<br>
-system lib path.(C:\\Windows\\System32 or /usr/lib).<br>
+cp -r darknet ..<br> 
+cd ..<br>
+./darknet detect cfg/yolov3-tiny.cfg yolov3-tiny.weights data/drone.jpg<br>
+
+
+
 
